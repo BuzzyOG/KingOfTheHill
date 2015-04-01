@@ -6,6 +6,7 @@ import net.thelightmc.exceptions.NoGameRunningException;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -35,6 +36,14 @@ public class KothListener implements Listener {
             manager.getGame().removeIfCapper(event.getPlayer());
         } catch (NoGameRunningException e) {
             e.getSuppressed();
+        }
+    }
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        try {
+            manager.getGame().removeIfCapper(event.getEntity());
+        } catch (NoGameRunningException ex) {
+            ex.getSuppressed();
         }
     }
     private boolean playedMoved(Location from, Location to) {

@@ -17,9 +17,11 @@ public class KothLocation implements Serializable {
     private double rewardX=10;
     private double rewardY=63;
     private double rewardZ=10;
+    private final String name;
     private final Selection selection;
 
-    public KothLocation(Selection selection) {
+    public KothLocation(String name,Selection selection) {
+        this.name = name;
         this.selection = selection;
     }
 
@@ -89,5 +91,9 @@ public class KothLocation implements Serializable {
     }
     public Location getRewardLocation() {
         return new Location(Bukkit.getWorld(world),rewardX,rewardY,rewardZ);
+    }
+
+    public String getName() {
+        return name;
     }
 }

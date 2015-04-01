@@ -8,7 +8,6 @@ public abstract class Command {
         this.command = command;
     }
     public abstract void execute(CommandSender sender,String[] args);
-
     public String getCommand() {
         return command;
     }

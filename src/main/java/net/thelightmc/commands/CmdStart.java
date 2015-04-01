@@ -5,11 +5,11 @@ import net.thelightmc.exceptions.NoGameRunningException;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CmdDebug extends Command{
+public class CmdStart extends Command{
     private final GameManager gameManager;
 
-    public CmdDebug(GameManager gameManager) {
-        super("debug");
+    public CmdStart(GameManager gameManager) {
+        super("start");
         this.gameManager = gameManager;
     }
 

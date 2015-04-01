@@ -19,13 +19,4 @@ public final class LocationUtil {
     }
     public static HashMap<String,KothLocation> getList() {
         return arenaLocations;
-    }
-
-    public static Location getRewardLocation() {
-        return rewardLocation;
-    }
-
-    public static void setRewardLocation(Location rewardLocation) {
-        LocationUtil.rewardLocation = rewardLocation;
-    }
-}
+    }}

@@ -1,18 +1,30 @@
 package net.thelightmc;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import de.schlichtherle.io.File;
+import net.thelightmc.commands.CmdCreate;
 import net.thelightmc.commands.CmdKoth;
+import net.thelightmc.commands.CmdStart;
 import net.thelightmc.listeners.KothListener;
+import net.thelightmc.storage.Database;
+import net.thelightmc.storage.JSONDatabase;
+import net.thelightmc.util.ItemLoader;
 import net.thelightmc.util.LocationUtil;
+import net.thelightmc.util.WeightedList;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+
 public class KOTH extends JavaPlugin {
-    private final GameManager gameManager = new GameManager();
     private WorldEditPlugin worldEdit;
+    private Database database = new JSONDatabase(getDataFolder().getAbsolutePath() + File.separator + "arenas.json");
+    private WeightedList<ItemStack> weights = new WeightedList<>();
+    private final GameManager gameManager = new GameManager(weights);
     @Override
     public void onEnable() {
         if (!getWorldEdit()) {
@@ -20,15 +32,20 @@ public class KOTH extends JavaPlugin {
             getLogger().severe("Exiting plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        LocationUtil.setRewardLocation(new Location(Bukkit.getWorlds().get(0),10,10,10));
+        loadList();
+        //Not tested loading
+        //loadLocations();
+        //ToDo Fix area for reward location
         registerListeners(this, new KothListener(gameManager));
-        getCommand("Koth").setExecutor(new CmdKoth(gameManager,worldEdit));
+        getCommand("Koth").setExecutor(new CmdKoth(new CmdCreate(worldEdit),new CmdStart(gameManager)));
     }
 
     @Override
     public void onDisable() {
-
+        //Not Tested yet
+        //saveLocations();
     }
+
     private boolean getWorldEdit() {
         try {
             worldEdit = (WorldEditPlugin) Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
@@ -41,6 +58,21 @@ public class KOTH extends JavaPlugin {
     private void registerListeners(Plugin plugin,Listener... listeners) {
         for (Listener listener : listeners) {
             Bukkit.getPluginManager().registerEvents(listener,plugin);
+        }
+    }
+    private void loadList() {
+        for (String s : getConfig().getStringList("Rewards")) {
+            ItemLoader.loadFromString(s, weights);
+        }
+    }
+    private void loadLocations() {
+        for (KothLocation location : database.load()) {
+            LocationUtil.addLocation(location.getName(), location);
+        }
+    }
+    private void saveLocations() throws IOException {
+        for (String name : LocationUtil.getList().keySet()) {
+            database.save(name,LocationUtil.getLocation(name));
         }
     }
 }

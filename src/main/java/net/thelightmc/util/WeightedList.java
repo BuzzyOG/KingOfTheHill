@@ -12,8 +12,6 @@ public class WeightedList<E> {
 
     public WeightedList() {}
 
-
-
     public void add(double weight, E result) {
         if (weight <= 0) return;
         total += weight;

@@ -1,5 +1,6 @@
 package net.thelightmc.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,7 +11,12 @@ import java.util.Collections;
 public class ItemLoader {
     public static void loadFromString(String s,WeightedList<ItemStack> list) {
         String[] split = s.split(":");
-        ItemStack itemStack = new ItemStack(Material.getMaterial(split[0]));
+        Material material = Material.getMaterial(split[0].toUpperCase().replace(" ","_"));
+        if (material == null) {
+            Bukkit.getLogger().warning(split[0] + " is not a valid material.");
+            return;
+        }
+        ItemStack itemStack = new ItemStack(material);
         ItemMeta meta = itemStack.getItemMeta();
         double weight = Double.parseDouble(split[1]);
         if (split.length > 1) {

@@ -103,9 +103,11 @@ public class KothGame {
     private void winGame() {
         Player player = Bukkit.getPlayer(capper);
         player.teleport(getLocation().getRewardLocation());
+        //ToDo Fix skins and make into villager
         NPCRegistry registry = NPCLib.getNPCRegistry("TacoRegistry", JavaPlugin.getProvidingPlugin(KOTH.class));
         NPC npc = registry.createNPC(EntityType.PLAYER, "TheLightMC");
         npc.setProtected(true);
+        npc.setSkin("TheLightMC");
         npc.setName(ChatColor.DARK_AQUA + "Rewards Guru");
         npc.spawn(getLocation().getRewardLocation());
     }

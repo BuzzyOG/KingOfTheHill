@@ -1,4 +1,11 @@
-package net.thelightmc.listeners;
+/*package net.thelightmc.listeners;
 
-public class RewardEvents {
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
+public class RewardEvents implements Listener {
+
 }
+
+This is just a temporary test class.
+*/

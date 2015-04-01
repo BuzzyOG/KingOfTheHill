@@ -1,11 +1,11 @@
 package net.thelightmc.storage;
 
-import com.google.gson.Gson;
 import net.thelightmc.KothLocation;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class JSONDatabase extends Database {
     public JSONDatabase(String path) {
@@ -14,22 +14,29 @@ public class JSONDatabase extends Database {
 
     @Override
     public void save(String name, KothLocation location) throws IOException {
-        Gson gson = new Gson();
-        String s = gson.toJson(location);
-        File file = new File(getPath());
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        FileWriter writer = new FileWriter(file);
+        String s = getGson().toJson(location);
+        FileWriter writer = new FileWriter(getPath());
         writer.write(s);
+        writer.close();
     }
 
     @Override
-    public KothLocation[] load() {
-        return null;
+    public Collection<? extends KothLocation> load() {
+        List<KothLocation> locationList = new ArrayList<>();
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(getPath()));
+            String line;
+            while((line=reader.readLine())!=null) {
+                if (line.equalsIgnoreCase("")) {
+                    break;
+                }
+                locationList.add(getGson().fromJson(line,KothLocation.class));
+            }
+        } catch (FileNotFoundException e) {
+            e.getSuppressed();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return locationList;
     }
 }
