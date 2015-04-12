@@ -2,6 +2,7 @@ package net.thelightmc.commands;
 
 import net.thelightmc.GameManager;
 import net.thelightmc.exceptions.NoGameRunningException;
+import net.thelightmc.util.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -26,5 +27,7 @@ public class CmdStart extends Command{
                 e1.printStackTrace();
             }
         }
+        
+        sender.sendMessage(StringUtils.format("&9[VeroKoth] &6New koth game started."));
     }
 }

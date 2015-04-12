@@ -100,6 +100,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>net.techcable:npclib</include>
+                                    <include>com.google.code.gson:Gson</include>
                                     <include>mkremins:fanciful</include>
                                 </includes>
                             </artifactSet>

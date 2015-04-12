@@ -56,7 +56,7 @@ public class KothGame {
     }
 
     private void clearCapper() {
-        if (capTime<=(60*15)-5) {
+        if (capTime<=reset-5) {
             FancyMessage fancyMessage = new FancyMessage(capper).color(ChatColor.GOLD).then(" has last control of the KOTH.").color(ChatColor.DARK_AQUA)
                     .suggest("/msg " + capper).tooltip(StringUtils.format("Cap Time: " + getTime(reset-capTime)));
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -107,7 +107,6 @@ public class KothGame {
         NPCRegistry registry = NPCLib.getNPCRegistry("TacoRegistry", JavaPlugin.getProvidingPlugin(KOTH.class));
         NPC npc = registry.createNPC(EntityType.PLAYER, "TheLightMC");
         npc.setProtected(true);
-        npc.setSkin("TheLightMC");
         npc.setName(ChatColor.DARK_AQUA + "Rewards Guru");
         npc.spawn(getLocation().getRewardLocation());
     }

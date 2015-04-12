@@ -1,7 +1,6 @@
 package net.thelightmc;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import de.schlichtherle.io.File;
 import net.thelightmc.commands.CmdCreate;
 import net.thelightmc.commands.CmdKoth;
 import net.thelightmc.commands.CmdStart;
@@ -12,17 +11,18 @@ import net.thelightmc.util.ItemLoader;
 import net.thelightmc.util.LocationUtil;
 import net.thelightmc.util.WeightedList;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
 
-public class KOTH extends JavaPlugin {
+public class KOTH extends JavaPlugin implements Listener {
+
     private WorldEditPlugin worldEdit;
-    private Database database = new JSONDatabase(getDataFolder().getAbsolutePath() + File.separator + "arenas.json");
+    //private Database database = new JSONDatabase(getDataFolder().getAbsolutePath() + File.separator + "arenas.json");
     private WeightedList<ItemStack> weights = new WeightedList<>();
     private final GameManager gameManager = new GameManager(weights);
     @Override
@@ -32,13 +32,15 @@ public class KOTH extends JavaPlugin {
             getLogger().severe("Exiting plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        loadList();
+        //loadList();
         //Not tested loading
         //loadLocations();
         //ToDo Fix area for reward location
         registerListeners(this, new KothListener(gameManager));
         getCommand("Koth").setExecutor(new CmdKoth(new CmdCreate(worldEdit),new CmdStart(gameManager)));
     }
+
+
 
     @Override
     public void onDisable() {
@@ -60,6 +62,7 @@ public class KOTH extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(listener,plugin);
         }
     }
+    /*
     private void loadList() {
         for (String s : getConfig().getStringList("Rewards")) {
             ItemLoader.loadFromString(s, weights);
@@ -75,4 +78,5 @@ public class KOTH extends JavaPlugin {
             database.save(name,LocationUtil.getLocation(name));
         }
     }
+*/
 }

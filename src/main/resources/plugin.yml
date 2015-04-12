@@ -2,5 +2,6 @@ name: Koth
 version: 1.0
 author: TheLightMC
 main: net.thelightmc.KOTH
+depend: [WorldEdit]
 commands:
    Koth:
